@@ -2,9 +2,61 @@
 
 [ext_resource type="Texture2D" uid="uid://by80071xq5lj" path="res://assets/images/player/Player.png" id="1_3vyb7"]
 
+[sub_resource type="Animation" id="Animation_g2els"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_3vyb7"]
+resource_name = "idle_down"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0009999999, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g2els"]
+_data = {
+&"RESET": SubResource("Animation_g2els"),
+&"idle_down": SubResource("Animation_3vyb7")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 33.24154
+
 [node name="Player" type="CharacterBody2D" unique_id=651225763]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1256928609]
+position = Vector2(0, -34.999996)
+scale = Vector2(5, 5)
 texture = ExtResource("1_3vyb7")
 hframes = 6
 vframes = 10
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=443041980]
+libraries/ = SubResource("AnimationLibrary_g2els")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1972365717]
+shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1156206943]
