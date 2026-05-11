@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://br2xvax33on2f"]
 
 [ext_resource type="Texture2D" uid="uid://by80071xq5lj" path="res://assets/images/player/Player.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://d3q5pi221vhxg" path="res://scenes/player/player.gd" id="1_dovo2"]
 
 [sub_resource type="Animation" id="Animation_g2els"]
 length = 0.001
@@ -45,6 +46,7 @@ _data = {
 radius = 33.24154
 
 [node name="Player" type="CharacterBody2D" unique_id=651225763]
+script = ExtResource("1_dovo2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1256928609]
 position = Vector2(0, -34.999996)
@@ -58,5 +60,3 @@ libraries/ = SubResource("AnimationLibrary_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1972365717]
 shape = SubResource("CircleShape2D_3vyb7")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1156206943]
