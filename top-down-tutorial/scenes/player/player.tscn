@@ -326,11 +326,10 @@ unique_name_in_owner = true
 script = ExtResource("3_gmlin")
 metadata/_custom_type_script = "uid://lh8ef2bjrase"
 
-[node name="MovementComponent" type="Node" parent="." unique_id=932778377 node_paths=PackedStringArray("body", "model")]
+[node name="MovementComponent" type="Node" parent="." unique_id=932778377 node_paths=PackedStringArray("body")]
 unique_name_in_owner = true
 script = ExtResource("4_lvxji")
 body = NodePath("..")
-model = NodePath("../Sprite2D")
 metadata/_custom_type_script = "uid://ccwqw2lg3hbdc"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=74933784]
