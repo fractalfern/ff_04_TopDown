@@ -1,3 +1,6 @@
+## TODO: I think I want this inside of movement.
+## That way when I have (for instance), an attack component, the
+## attack animation goes with that
 class_name AnimationComponent extends Node
 
 const ANIMATION_IDLE: String = "parameters/idle/blend_position"
