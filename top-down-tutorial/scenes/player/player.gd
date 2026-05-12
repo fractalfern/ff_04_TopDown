@@ -7,6 +7,4 @@ func _physics_process(delta: float) -> void:
 	input.update()
 	movement.direction = input.vector
 	movement.animate()
-	movement.tick(delta)
-
-	
+	movement.move()

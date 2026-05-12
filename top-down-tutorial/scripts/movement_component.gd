@@ -20,7 +20,7 @@ func _ready() -> void:
 ## Updates the underlying body's velocity
 ## using the current direction and speed
 ## The move_and_slide() the body
-func tick(_delta: float) -> void:
+func move() -> void:
 	body.velocity = direction * speed
 	body.move_and_slide()
 
