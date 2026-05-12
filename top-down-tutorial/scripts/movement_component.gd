@@ -1,6 +1,5 @@
 class_name MovementComponent extends Node
 
-# TODO: move these global?
 const ANIMATION_IDLE: String = "parameters/idle/blend_position"
 const ANIMATION_MOVE: String = "parameters/move/blend_position"
 
