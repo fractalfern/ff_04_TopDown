@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://d3q5pi221vhxg" path="res://scenes/player/player.gd" id="1_dovo2"]
 [ext_resource type="Script" uid="uid://lh8ef2bjrase" path="res://scripts/input_component.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://ccwqw2lg3hbdc" path="res://scripts/movement_component.gd" id="4_lvxji"]
-[ext_resource type="Script" uid="uid://bvcyhmw6waq61" path="res://scripts/animation_component.gd" id="5_p47bc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 radius = 33.24154
@@ -342,10 +341,3 @@ advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
 parameters/idle/blend_position = Vector2(-0.3955292, 0.070329666)
 parameters/move/blend_position = Vector2(-0.42016423, -0.07452726)
-
-[node name="AnimationComponent" type="Node" parent="." unique_id=1942530083 node_paths=PackedStringArray("movement", "animation_tree")]
-unique_name_in_owner = true
-script = ExtResource("5_p47bc")
-movement = NodePath("../MovementComponent")
-animation_tree = NodePath("../AnimationTree")
-metadata/_custom_type_script = "uid://bvcyhmw6waq61"
