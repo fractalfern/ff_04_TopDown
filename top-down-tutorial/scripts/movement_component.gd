@@ -2,31 +2,31 @@ class_name MovementComponent extends Node
 
 const ANIMATION_IDLE: String = "parameters/idle/blend_position"
 const ANIMATION_MOVE: String = "parameters/move/blend_position"
-
-@export var body: CharacterBody2D
-@export var animation_tree: AnimationTree
-
 @export var speed: float = 300.0
 
 ## Normalized direction vector
 var direction: Vector2 = Vector2.ZERO
 
-func _ready() -> void:
-	assert(body != null)
-	assert(animation_tree != null)	
-	assert(animation_tree.get(ANIMATION_IDLE) != null)
-	assert(animation_tree.get(ANIMATION_MOVE) != null)
-
-## Updates the underlying body's velocity
+## Updates the body's velocity
 ## using the current direction and speed
 ## The move_and_slide() the body
-func move() -> void:
+func move(body: CharacterBody2D) -> void:
+	assert(body != null)
+	
 	body.velocity = direction * speed
 	body.move_and_slide()
 
 ## Animates the current movement
 ## Recommended to be called before tick()
-func animate() -> void:
+func animate(animation_tree: AnimationTree) -> void:
+	#This feels off, but don't have a better idea at the moment. I previously had AnimationTree
+	#as a variable, and did these checks in _ready() but then when i wanted to add attacks, i
+	#was duplicating code
+	assert(animation_tree != null)	
+	assert(animation_tree.get(ANIMATION_IDLE) != null)
+	assert(animation_tree.get(ANIMATION_MOVE) != null)
+	
+	#This actually isn't animating anything, it's just setting the "blend positition direction"
 	if direction != Vector2.ZERO:
 		animation_tree.set(ANIMATION_IDLE, direction)
 		animation_tree.set(ANIMATION_MOVE, direction)

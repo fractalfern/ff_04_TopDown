@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://by80071xq5lj" path="res://assets/images/player/Player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d3q5pi221vhxg" path="res://scenes/player/player.gd" id="1_dovo2"]
-[ext_resource type="Script" uid="uid://lh8ef2bjrase" path="res://scripts/input_component.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://ccwqw2lg3hbdc" path="res://scripts/movement_component.gd" id="4_lvxji"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
@@ -324,6 +323,29 @@ _data = {
 &"move_up": SubResource("Animation_fm80t")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fm80t"]
+animation = &"attack_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gx1jg"]
+animation = &"attack_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ugbui"]
+animation = &"attack_up"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fcs02"]
+animation = &"attack_right"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_myrg7"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_fm80t")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_gx1jg")
+blend_point_1/pos = Vector2(0, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_ugbui")
+blend_point_2/pos = Vector2(0, -1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_fcs02")
+blend_point_3/pos = Vector2(1, 0)
+blend_mode = 1
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lvxji"]
 animation = &"idle_left"
 
@@ -381,14 +403,22 @@ advance_expression = "self.velocity.length() != 0"
 advance_mode = 2
 advance_expression = "self.velocity.length() == 0"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kvlxm"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uf5tr"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lgqa7"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_75vfm"]
 states/End/position = Vector2(813.1428, 100.49146)
 states/Start/position = Vector2(281.7143, 100.28084)
+states/attack/node = SubResource("AnimationNodeBlendSpace2D_myrg7")
+states/attack/position = Vector2(531.7143, 252.7064)
 states/idle/node = SubResource("AnimationNodeBlendSpace2D_lvxji")
 states/idle/position = Vector2(448.85712, 99.257645)
 states/move/node = SubResource("AnimationNodeBlendSpace2D_fm80t")
 states/move/position = Vector2(634.97955, 99.42129)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p47bc"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_gx1jg"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_ugbui")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p47bc"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_gx1jg"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_ugbui"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_kvlxm"), "move", "attack", SubResource("AnimationNodeStateMachineTransition_uf5tr"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_lgqa7")]
 graph_offset = Vector2(0, -49.007877)
 
 [node name="Player" type="CharacterBody2D" unique_id=651225763]
@@ -405,18 +435,6 @@ vframes = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1972365717]
 shape = SubResource("CircleShape2D_3vyb7")
 
-[node name="InputComponent" type="Node" parent="." unique_id=1042967690]
-unique_name_in_owner = true
-script = ExtResource("3_gmlin")
-metadata/_custom_type_script = "uid://lh8ef2bjrase"
-
-[node name="MovementComponent" type="Node" parent="." unique_id=932778377 node_paths=PackedStringArray("body", "animation_tree")]
-unique_name_in_owner = true
-script = ExtResource("4_lvxji")
-body = NodePath("..")
-animation_tree = NodePath("../AnimationTree")
-metadata/_custom_type_script = "uid://ccwqw2lg3hbdc"
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=74933784]
 libraries/ = SubResource("AnimationLibrary_gx1jg")
 
@@ -424,5 +442,11 @@ libraries/ = SubResource("AnimationLibrary_gx1jg")
 tree_root = SubResource("AnimationNodeStateMachine_75vfm")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
-parameters/idle/blend_position = Vector2(-0.3955292, 0.070329666)
-parameters/move/blend_position = Vector2(-0.42016423, -0.07452726)
+parameters/attack/blend_position = Vector2(-0.30491632, -0.16017318)
+parameters/idle/blend_position = Vector2(0.66684103, -0.09585488)
+parameters/move/blend_position = Vector2(-0.25261503, -0.015873075)
+
+[node name="MovementComponent" type="Node" parent="." unique_id=932778377]
+unique_name_in_owner = true
+script = ExtResource("4_lvxji")
+metadata/_custom_type_script = "uid://ccwqw2lg3hbdc"
