@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://by80071xq5lj" path="res://assets/images/player/Player.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d3q5pi221vhxg" path="res://scenes/player/player.gd" id="1_dovo2"]
-[ext_resource type="Script" uid="uid://ccwqw2lg3hbdc" path="res://scripts/movement_component.gd" id="4_lvxji"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 radius = 33.24154
@@ -445,8 +444,3 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/attack/blend_position = Vector2(-0.30491632, -0.16017318)
 parameters/idle/blend_position = Vector2(0.66684103, -0.09585488)
 parameters/move/blend_position = Vector2(-0.25261503, -0.015873075)
-
-[node name="MovementComponent" type="Node" parent="." unique_id=932778377]
-unique_name_in_owner = true
-script = ExtResource("4_lvxji")
-metadata/_custom_type_script = "uid://ccwqw2lg3hbdc"
