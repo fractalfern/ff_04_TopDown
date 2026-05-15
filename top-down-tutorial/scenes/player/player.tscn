@@ -112,6 +112,18 @@ tracks/1/keys = {
 resource_name = "attack_up"
 length = 0.4
 step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [48, 49, 50, 51]
+}
 
 [sub_resource type="Animation" id="Animation_p47bc"]
 resource_name = "idle_down"
@@ -395,28 +407,26 @@ blend_mode = 1
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gx1jg"]
-advance_mode = 2
-advance_expression = "self.velocity.length() != 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ugbui"]
-advance_mode = 2
-advance_expression = "self.velocity.length() == 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kvlxm"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uf5tr"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lgqa7"]
+switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_75vfm"]
 states/End/position = Vector2(813.1428, 100.49146)
 states/Start/position = Vector2(281.7143, 100.28084)
 states/attack/node = SubResource("AnimationNodeBlendSpace2D_myrg7")
-states/attack/position = Vector2(531.7143, 252.7064)
+states/attack/position = Vector2(531.7143, 251.56355)
 states/idle/node = SubResource("AnimationNodeBlendSpace2D_lvxji")
-states/idle/position = Vector2(448.85712, 99.257645)
+states/idle/position = Vector2(448.85712, 100.54736)
 states/move/node = SubResource("AnimationNodeBlendSpace2D_fm80t")
-states/move/position = Vector2(634.97955, 99.42129)
+states/move/position = Vector2(635.55096, 100.43048)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p47bc"), "idle", "move", SubResource("AnimationNodeStateMachineTransition_gx1jg"), "move", "idle", SubResource("AnimationNodeStateMachineTransition_ugbui"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_kvlxm"), "move", "attack", SubResource("AnimationNodeStateMachineTransition_uf5tr"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_lgqa7")]
 graph_offset = Vector2(0, -49.007877)
 
@@ -438,6 +448,7 @@ shape = SubResource("CircleShape2D_3vyb7")
 libraries/ = SubResource("AnimationLibrary_gx1jg")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=835788699]
+active = false
 tree_root = SubResource("AnimationNodeStateMachine_75vfm")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

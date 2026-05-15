@@ -4,29 +4,54 @@ const ANIMATION_IDLE: String = "parameters/idle/blend_position"
 const ANIMATION_MOVE: String = "parameters/move/blend_position"
 const ANIMATION_ATTACK: String = "parameters/attack/blend_position"
 
-@onready var animation_tree: AnimationTree = $AnimationTree
+enum State {IDLE, MOVE, ATTACK}
+
 @export var speed: float = 300.0
 
-var direction: Vector2 = Vector2.ZERO
-
-enum State {IDLE, MOVE, ATTACK}
 var state: State = State.IDLE
+var facing_direction: Vector2 = Vector2.ZERO
 
-func _physics_process(delta: float) -> void:
-	direction = Input.get_vector("move_left", "move_right", 
-							 	   "move_up", "move_down")
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback: AnimationNodeStateMachinePlayback = $AnimationTree["parameters/playback"]
 
+func _ready() -> void:
+	animation_tree.active = true
+
+func _physics_process(_delta: float) -> void:
+	#unhandled input deals with attack
+	handle_input()
+	update_animation()
+	move_and_slide()
+
+func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("attack"):
 		attack()
+
+func handle_input() -> void:
+	if state != State.ATTACK:
+		var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
+											 		"move_up", "move_down")
+													
+		var motion: Vector2 = input_vector*speed
 		
-	if direction != Vector2.ZERO:
-		animation_tree.set(ANIMATION_IDLE, direction)
-		animation_tree.set(ANIMATION_MOVE, direction)
-		animation_tree.set(ANIMATION_ATTACK, direction)
-	
-	self.velocity = direction * speed
-	self.move_and_slide()
-	
+		if motion != Vector2.ZERO:
+			facing_direction = input_vector
+			
+			if state == State.IDLE:
+				state = State.MOVE
+		elif motion == Vector2.ZERO && state == State.MOVE:
+			state = State.IDLE
+			
+		set_velocity(motion)
+
 func attack() -> void:
-	state = State.ATTACK
-	print("Is attacking")
+	print("Attack")
+
+func update_animation() -> void:
+	match state:
+		State.IDLE:
+			animation_tree.set(ANIMATION_IDLE, facing_direction)
+			animation_playback.travel("idle")
+		State.MOVE:
+			animation_tree.set(ANIMATION_MOVE, facing_direction)
+			animation_playback.travel("move")
