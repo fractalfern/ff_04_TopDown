@@ -18,34 +18,44 @@ func _ready() -> void:
 	animation_tree.active = true
 
 func _physics_process(_delta: float) -> void:
-	#unhandled input deals with attack
-	handle_input()
+	handle_attack_input()
+	handle_movement_input()
 	update_animation()
 	move_and_slide()
 
-func _unhandled_input(event: InputEvent) -> void:
+func handle_attack_input() -> void:
 	if Input.is_action_just_pressed("attack"):
 		attack()
 
-func handle_input() -> void:
-	if state != State.ATTACK:
-		var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
-											 		"move_up", "move_down")
-													
-		var motion: Vector2 = input_vector*speed
+func handle_movement_input() -> void:
+	if state == State.ATTACK:
+		return
 		
-		if motion != Vector2.ZERO:
-			facing_direction = input_vector
-			
-			if state == State.IDLE:
-				state = State.MOVE
-		elif motion == Vector2.ZERO && state == State.MOVE:
-			state = State.IDLE
-			
-		set_velocity(motion)
+	var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
+										 		"move_up", "move_down")
+												
+	var motion: Vector2 = input_vector*speed
+	
+	if motion != Vector2.ZERO:
+		facing_direction = input_vector
+		
+		if state == State.IDLE:
+			state = State.MOVE
+	elif motion == Vector2.ZERO && state == State.MOVE:
+		state = State.IDLE
+		
+	set_velocity(motion)
 
 func attack() -> void:
-	print("Attack")
+	# If already attacking, don't do anything
+	if state == State.ATTACK:
+		return
+		
+	state = State.ATTACK
+	set_velocity(Vector2.ZERO)
+	
+	await get_tree().create_timer(0.4).timeout
+	state = State.IDLE
 
 func update_animation() -> void:
 	match state:
@@ -55,3 +65,6 @@ func update_animation() -> void:
 		State.MOVE:
 			animation_tree.set(ANIMATION_MOVE, facing_direction)
 			animation_playback.travel("move")
+		State.ATTACK:
+			animation_tree.set(ANIMATION_ATTACK, facing_direction)
+			animation_playback.travel("attack")
