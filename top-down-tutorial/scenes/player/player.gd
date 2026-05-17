@@ -21,15 +21,17 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	handle_attack_input()
+	if Input.is_action_just_pressed("attack"):
+		if state != State.ATTACK:
+			state = State.ATTACK
+			set_velocity(Vector2.ZERO)
+		
+			await get_tree().create_timer(attack_speed).timeout
+			state = State.IDLE
+	
 	handle_movement_input()
 	update_animation()
 	move_and_slide()
-
-
-func handle_attack_input() -> void:
-	if Input.is_action_just_pressed("attack"):
-		attack()
 
 
 func handle_movement_input() -> void:
@@ -50,18 +52,6 @@ func handle_movement_input() -> void:
 		state = State.IDLE
 		
 	set_velocity(motion)
-
-
-func attack() -> void:
-	if state == State.ATTACK:
-		return
-		
-	state = State.ATTACK
-	set_velocity(Vector2.ZERO)
-	
-	await get_tree().create_timer(attack_speed).timeout
-	state = State.IDLE
-
 
 func update_animation() -> void:
 	match state:
