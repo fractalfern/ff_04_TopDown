@@ -8,9 +8,9 @@ enum State {IDLE, MOVE, ATTACK}
 
 @export var speed: float = 300.0
 
+var attack_speed: float = 0.4 #TODO link this to the animation
 var state: State = State.IDLE
 var facing_direction: Vector2 = Vector2.ZERO
-var attack_speed: float = 0.4 #TODO link this to the animation
 
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var animation_playback: AnimationNodeStateMachinePlayback = $AnimationTree["parameters/playback"]
@@ -21,29 +21,26 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("attack"):
-		if state != State.ATTACK:
+	if state != State.ATTACK:
+		if Input.is_action_just_pressed("attack"):
 			state = State.ATTACK
 			set_velocity(Vector2.ZERO)
 		
 			await get_tree().create_timer(attack_speed).timeout
 			state = State.IDLE
-	
-	if state != State.ATTACK:
-		var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
-											 		"move_up", "move_down")
+		else:
+			var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
+												 		"move_up", "move_down")
 
-		var motion: Vector2 = input_vector*speed
-		
-		if motion != Vector2.ZERO:
-			facing_direction = input_vector
-			
-			if state == State.IDLE:
-				state = State.MOVE
-		elif motion == Vector2.ZERO and state == State.MOVE:
-			state = State.IDLE
-			
-		set_velocity(motion)
+			if input_vector != Vector2.ZERO:
+				facing_direction = input_vector
+				
+				if state == State.IDLE:
+					state = State.MOVE
+			elif input_vector == Vector2.ZERO and state == State.MOVE:
+				state = State.IDLE
+				
+			set_velocity(input_vector*speed)
 	
 	match state:
 		State.IDLE:
