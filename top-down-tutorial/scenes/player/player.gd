@@ -29,31 +29,22 @@ func _physics_process(_delta: float) -> void:
 			await get_tree().create_timer(attack_speed).timeout
 			state = State.IDLE
 	
-	handle_movement_input()
-	update_animation()
-	move_and_slide()
+	if state != State.ATTACK:
+		var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
+											 		"move_up", "move_down")
 
-
-func handle_movement_input() -> void:
-	if state == State.ATTACK:
-		return
-
-	var input_vector: Vector2 = Input.get_vector("move_left", "move_right", 
-										 		"move_up", "move_down")
-
-	var motion: Vector2 = input_vector*speed
+		var motion: Vector2 = input_vector*speed
+		
+		if motion != Vector2.ZERO:
+			facing_direction = input_vector
+			
+			if state == State.IDLE:
+				state = State.MOVE
+		elif motion == Vector2.ZERO and state == State.MOVE:
+			state = State.IDLE
+			
+		set_velocity(motion)
 	
-	if motion != Vector2.ZERO:
-		facing_direction = input_vector
-		
-		if state == State.IDLE:
-			state = State.MOVE
-	elif motion == Vector2.ZERO and state == State.MOVE:
-		state = State.IDLE
-		
-	set_velocity(motion)
-
-func update_animation() -> void:
 	match state:
 		State.IDLE:
 			animation_tree.set(ANIMATION_IDLE, facing_direction)
@@ -64,3 +55,5 @@ func update_animation() -> void:
 		State.ATTACK:
 			animation_tree.set(ANIMATION_ATTACK, facing_direction)
 			animation_playback.travel("attack")
+
+	move_and_slide()
